@@ -2,16 +2,33 @@ name: Build & Push Docker
 on:
   push:
     branches: [main]
+    tags: ["v*"]
+
 jobs:
   build:
     runs-on: ubuntu-latest
     permissions:
+      contents: read
       packages: write
     steps:
       - uses: actions/checkout@v4
       - name: Log in to GHCR
         run: echo "${{ secrets.GITHUB_TOKEN }}" | docker login ghcr.io -u ${{ github.actor }} --password-stdin
       - name: Build & push
+        env:
+          IMAGE_BASE: ghcr.io/${{ github.repository }}
+          ALT_IMAGE: ghcr.io/${{ github.repository_owner }}/namo-hub
         run: |
-          docker build -t ghcr.io/${{ github.repository }}:latest .
-          docker push ghcr.io/${{ github.repository }}:latest
+          set -e
+          docker build -t "$IMAGE_BASE:latest" .
+          docker tag "$IMAGE_BASE:latest" "$ALT_IMAGE:latest"
+          TAGS=("$IMAGE_BASE:latest" "$ALT_IMAGE:latest")
+          if [[ "${GITHUB_REF}" == refs/tags/* ]]; then
+            VERSION_TAG="${GITHUB_REF#refs/tags/}"
+            docker tag "$IMAGE_BASE:latest" "$IMAGE_BASE:$VERSION_TAG"
+            docker tag "$IMAGE_BASE:latest" "$ALT_IMAGE:$VERSION_TAG"
+            TAGS+=("$IMAGE_BASE:$VERSION_TAG" "$ALT_IMAGE:$VERSION_TAG")
+          fi
+          for tag in "${TAGS[@]}"; do
+            docker push "$tag"
+          done

@@ -1,62 +1,80 @@
-# ⚙️ Blueprint Factory
+﻿# ⚙️ Blueprint Factory
 
-**Blueprint Factory** คือ Web Application ที่ช่วยเปลี่ยนไฟล์เอกสารดิบ (PDF, Word, Text) ให้กลายเป็น "Digital Product Packages" พร้อมขายได้ทันที โดยระบบจะทำการดึงเนื้อหาและจัดลงใน Template แบบต่างๆ (Starter, Agency, Whitelabel) โดยอัตโนมัติ
+[![Docker](https://img.shields.io/badge/Docker-Ready-2496ed?logo=docker&logoColor=white)](https://ghcr.io/icezingza/blueprint-factory)
+[![Streamlit](https://img.shields.io/badge/Streamlit-Cloud-ff4b4b?logo=streamlit&logoColor=white)](https://share.streamlit.io/icezingza/blueprint-factory)
+[![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+[![Build & Push Docker](https://github.com/icezingza/blueprint-factory/actions/workflows/build.yml/badge.svg)](https://github.com/icezingza/blueprint-factory/actions/workflows/build.yml)
+[![CI](https://github.com/icezingza/blueprint-factory/actions/workflows/ci.yml/badge.svg)](https://github.com/icezingza/blueprint-factory/actions/workflows/ci.yml)
 
-## ✨ ฟีเจอร์หลัก
-- 📂 **รองรับหลายไฟล์**: อัปโหลด PDF, DOCX, TXT ได้พร้อมกันหลายไฟล์
-- 🚀 **Automated Packaging**: สร้างโฟลเดอร์และจัดหมวดหมู่ไฟล์ให้อัตโนมัติ
-- 📦 **One-Click Download**: บีบอัดไฟล์ทั้งหมดเป็น ZIP พร้อมดาวน์โหลดในคลิกเดียว
-- 🛡️ **Secure**: ระบบจัดการไฟล์ชั่วคราวอย่างปลอดภัย ไม่กินพื้นที่ Server
+**TH:** Blueprint Factory คือเว็บแอปที่ช่วยเปลี่ยนไฟล์ PDF/Word/TXT ให้เป็นแพ็กเกจดิจิทัลพร้อมขาย (Starter / Agency / Whitelabel) ด้วยการอัปโหลดครั้งเดียวแล้วดาวน์โหลด ZIP ได้ทันที.
 
-## 🛠 การติดตั้งและใช้งาน (Local)
-1. **Clone Repository**
-   ```bash
-   git clone https://github.com/icezingza/blueprint-factory.git
-   cd blueprint-factory
-   ```
+**EN:** Blueprint Factory turns PDF/Word/TXT files into ready‑to‑sell digital packages (Starter / Agency / Whitelabel) with a single upload and one‑click ZIP export.
 
-2. **สร้าง Virtual Environment (แนะนำ)**
-   ```bash
-   python -m venv venv
-   # Windows
-   venv\Scripts\activate
-   # Mac/Linux
-   source venv/bin/activate
-   ```
+## Features / ฟีเจอร์
+- รองรับหลายไฟล์ PDF, DOCX, TXT พร้อมกัน / Multi-file upload support.
+- สร้างโฟลเดอร์แพ็กเกจอัตโนมัติ / Automated package structure.
+- ดาวน์โหลด ZIP ครั้งเดียว / One‑click ZIP download.
+- แยกเก็บผลลัพธ์ใน `output/` / Outputs stored in `output/`.
 
-3. **ติดตั้ง Library ที่จำเป็น**
-   ```bash
-   pip install -r requirements.txt
-   ```
+## Quick Start (Local) / เริ่มใช้งานบนเครื่อง
+```bash
+git clone https://github.com/icezingza/blueprint-factory.git
+cd blueprint-factory
+python -m venv venv
+# Windows
+venv\Scripts\activate
+# macOS/Linux
+source venv/bin/activate
+pip install -r requirements.txt
+streamlit run app.py
+```
+เปิด `http://localhost:8501`
 
-4. **รันโปรแกรม**
-   ```bash
-   streamlit run app.py
-   ```
+## Docker Compose (Local) / รันแบบ Docker
+```bash
+docker-compose up
+```
+เปิด `http://localhost:8501`
 
-## 📂 โครงสร้างโปรเจกต์
-```text
-blueprint-factory/
-├── app.py              # ไฟล์หลักสำหรับรัน Streamlit App
-├── src/                # โค้ดส่วนประมวลผล (Backend Logic)
-│   ├── extractor.py    # ดึงข้อความจากไฟล์
-│   └── packager.py     # สร้างแพ็กเกจสินค้า
-├── templates/          # แม่แบบสินค้า (Starter, Agency, Whitelabel)
-└── requirements.txt    # รายชื่อ Library ที่ต้องใช้
+## GHCR (Container Registry)
+```bash
+docker run -p 8501:8501 ghcr.io/icezingza/blueprint-factory:latest
+```
+มีแท็กเสริมชื่อ `ghcr.io/icezingza/namo-hub:latest` เพื่อใช้งานกับชื่อแบรนด์เดิม.
+
+## Streamlit Cloud
+Deploy ฟรีผ่าน Streamlit Cloud:
+1) ไปที่ `https://share.streamlit.io`
+2) เลือก repo `icezingza/blueprint-factory` และไฟล์ `app.py`
+3) กด Deploy
+
+## Development / การพัฒนา
+```bash
+pip install -r requirements.txt -r requirements-dev.txt
+black --check .
+flake8 .
+pytest
 ```
 
-## 🚀 การ Deploy (Streamlit Cloud)
-### 💡 ขั้นตอนต่อไป: Deploy ขึ้นเว็บจริง (ฟรี)
-ตอนนี้โค้ดของคุณอยู่บน GitHub แล้ว คุณสามารถทำให้คนอื่นเข้ามาใช้งานได้จริงผ่านอินเทอร์เน็ต โดยไม่ต้องเปิดคอมทิ้งไว้ ด้วยบริการ **Streamlit Cloud**
+## Versioned Images / เวอร์ชันของ Image
+- `ghcr.io/icezingza/blueprint-factory:latest`
+- `ghcr.io/icezingza/blueprint-factory:v1.0.0`
+- `ghcr.io/icezingza/namo-hub:latest`
+- `ghcr.io/icezingza/namo-hub:v1.0.0`
 
-1. เข้าไปที่ `share.streamlit.io`
-2. ล็อกอินด้วย GitHub
-3. กดปุ่ม **New app**
-4. เลือก Repository: `icezingza/blueprint-factory`
-5. Branch: `main`
-6. Main file path: `app.py`
-7. กด **Deploy!**
-
-รอสักครู่ คุณจะได้ลิงก์เว็บ (เช่น `https://blueprint-factory.streamlit.app`) ที่ส่งให้เพื่อนหรือลูกค้าใช้งานได้เลยครับ!
+## Project Structure / โครงสร้างโปรเจกต์
+```text
+blueprint-factory/
+├── app.py
+├── src/
+│   ├── extractor.py
+│   ├── packager.py
+│   └── templates.py
+├── requirements.txt
+├── requirements-dev.txt
+├── Dockerfile
+├── docker-compose.yml
+└── .github/workflows/
+```
 
 Developed by IceZingZa
